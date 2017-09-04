@@ -27,7 +27,7 @@ class Status:
     def Skill1(self,target):
         if(self.magicpoint > 5):
             print('{}が{}にスキル攻撃'.format(self.NAME,target.NAME))
-            target.hitpoint -= self.attack * 1.15- target.defence
+            target.hitpoint -= self.attack * 1.4- target.defence
             self.magicpoint -= 5
             if target.hitpoint <= 0 :
                 target.live = False
@@ -40,6 +40,11 @@ class Status:
             if(target.hitpoint >= target.MAXHITPOINT):
                 target.hitpoint = target.MAXHITPOINT
             self.movecheck = True
+    def Skill2(self,targets):
+        if(self.magicpoint > 10):
+            for x in targets:
+                x.hitpoint -= self.attack * 1.1 - x.defence
+            self.magicpoint -= 10
     def Choice(self):
         st = int(CheckStatus(),4)
         t = 0
@@ -85,9 +90,9 @@ class Status:
 #自キャラ
 player = Status('Player',80,40,25,15,True)
 #味方AI
-friend = Status('NPC',80,40,25,15,False,True)
+friend = Status('NPC',120,50,30,10,False,True)
 #敵キャラ
-enemy = Status('Enemy',80,40,25,15,False,False,True)
+enemy = Status('Enemy',210,60,30,20,False,False,True)
 _list = [player,friend,enemy]
 listSt = []
 listNm = []
@@ -173,6 +178,10 @@ def Flow():
             for y in listNm:
                 data[x][y] += 1
         DataSave()
+    elif player.live == False:
+        for x in listSt:
+            for y in listNm:
+                data[x][y] -= 1
     return
 
 
