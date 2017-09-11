@@ -21,7 +21,8 @@ class Status:
     def Attack(self,target):
         damage = int((self.attack * random.uniform(0.7,1.3)) - target.defence * random.uniform(0.9,1.1))
         target.hitpoint -= damage
-        print('{}が{}に通常攻撃--{}のダメージ'.format(self.NAME,target.NAME,damage))
+        if choice == 0:
+            print('{}が{}に通常攻撃--{}のダメージ'.format(self.NAME,target.NAME,damage))
         if target.hitpoint <= 0 :
             target.hitpoint = 0
             target.live = False
@@ -30,7 +31,8 @@ class Status:
         if(self.magicpoint >= 10):
             damage = int(self.attack * random.uniform(0.7,1.3) * 1.4 - target.defence * random.uniform(0.9,1.1))
             target.hitpoint -= damage
-            print('{}が{}にスキル攻撃--{}のダメージ'.format(self.NAME,target.NAME,damage))
+            if choice == 0:
+                print('{}が{}にスキル攻撃--{}のダメージ'.format(self.NAME,target.NAME,damage))
             self.magicpoint -= 10
             if target.hitpoint <= 0 :
                 target.hitpoint = 0
@@ -38,7 +40,8 @@ class Status:
             self.movecheck = True
     def Heal(self,target):
         if(self.magicpoint >= 10):
-            print('{}が{}を回復'.format(self.NAME,target.NAME))
+            if choice == 0:
+                print('{}が{}を回復'.format(self.NAME,target.NAME))
             target.hitpoint += int(target.MAXHITPOINT / 10)
             self.magicpoint -= 10
             if(target.hitpoint >= target.MAXHITPOINT):
@@ -62,7 +65,10 @@ class Status:
         if self.live == True:
             st1 = int(CheckStatus(player,friend,enemy),4)
             if self.friend == True:
-                number = self.Choice()
+                if self.magicpoint >= 10:
+                    number = self.Choice()
+                elif self.magicpoint < 10:
+                    number = 0
             elif self.player == True:
                 _number = input('0:通常攻撃,1:スキル攻撃,2:自己回復 >>')
                 number = int(_number)
@@ -159,7 +165,11 @@ def Flow():
         for x in list1:
             if player.live == False or enemy.live == False:
                 break
-            x.Action()
+            if x.live == True:
+                while x.movecheck == False:
+                    x.Action()
+        for x in _list:
+            x.movecheck = False
     if enemy.live == True:
         for x in listSt:
             for y in listNm:
@@ -199,7 +209,7 @@ def DataRead():
 
 
 data = DataRead()
-COUNT = 1000
+COUNT = 100000
 n = 0
 win = 0
 
@@ -221,7 +231,7 @@ if choice == 0:
         print("LOSE")
 elif choice == 1:
     while(n < COUNT):
-        print("{}回目".format(n))
+        print("{}回目".format(n + 1))
         #自キャラ
         player = Status('Player',80,40,40,15,False,True)
         #味方AI
