@@ -84,9 +84,9 @@ def main():
   my = [player, npc]
   opp = [enemy]
   simulatenum = 100
-  
-  while player.hp >= 0 or enemy.hp >= 0:
+  while player.hp > 0 and enemy.hp > 0:
     for i in range(simulatenum):
+      print(i)
       SimulateInQ(copy.deepcopy(player), copy.deepcopy(npc), copy.deepcopy(enemy))
     InSimulate = False
     characterlist = [player, npc, enemy]
@@ -100,6 +100,14 @@ def main():
             i.Attack(enemy)
           else:
             i.Attack(random.choice(my))
+        if player.hp <= 0 or enemy.hp <= 0:
+          break
+        elif npc.hp <= 0:
+          npc.live = False
+  if player.hp >= 0:
+    print("win")
+  else:
+    print("lose")
 
 if __name__ == '__main__':
     main()
