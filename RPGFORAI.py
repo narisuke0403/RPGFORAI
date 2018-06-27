@@ -74,11 +74,11 @@ def SimulateInQ(player,npc,enemy,Qtable):
           i.Attack(enemy)
         elif choice == 1:
           i.Skill1(enemy)
-          if i.mp < 11:
+          if i.mp < 10:
             choice = 0
         elif choice == 2:
           i.Heal(player)
-          if i.mp < 11:
+          if i.mp < 10:
             choice = 0
       else:
         if i in my:
@@ -99,6 +99,7 @@ def SimulateInQ(player,npc,enemy,Qtable):
     Qtable[temp][choice] = (1-alpha) * Qtable[temp][choice] + alpha * (score + Qtable[temp_next][np.argmax(Qtable[temp_next])])
   return score
   
+#状況を離散化
 def CheckSituation(player,npc,enemy):
   st = ""
   li = [player,npc,enemy]
@@ -113,6 +114,7 @@ def CheckSituation(player,npc,enemy):
       st += "3"
   return int(st,4)
 
+#一ターンの流れ
 def flow():
   player = Character('Player', 300, 40, 60, 15,True)
   npc = Character('NPC', 340, 40, 50, 10, True)
